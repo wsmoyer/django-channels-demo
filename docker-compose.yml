@@ -1,0 +1,26 @@
+version: '3.3'
+services:
+  backend:
+    build:
+      context: ./backend
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/app
+    command: /start.sh
+    entrypoint: /entrypoint.sh
+    restart: on-failure
+    env_file: .env
+    ports:
+      - "8000:8000"
+  postgres:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file: .env
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+volumes:
+  postgres_data: {}
